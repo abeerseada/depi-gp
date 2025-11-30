@@ -12,4 +12,4 @@
 </p>
 ---
 This is the architecture diagram:
-![Animated Diagram](static/draw.gif)
+<img src="static/draw.gif" width="600">
