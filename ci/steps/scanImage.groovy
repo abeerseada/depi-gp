@@ -30,6 +30,7 @@ def call() {
                 } finally {
                     // Best-effort logout (keeps workspace clean); ignore errors
                     sh 'docker logout || true'
+                    sh 'rm -f /var/jenkins_home/.docker/config.json || true'
                 }
             }
         }

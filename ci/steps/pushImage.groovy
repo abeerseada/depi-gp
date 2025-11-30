@@ -23,6 +23,10 @@ def call() {
                     currentBuild.result = 'FAILURE'
                     throw e
                 }
+                finally {
+                    sh 'docker logout || true'
+                    sh 'rm -f /var/jenkins_home/.docker/config.json || true'
+                }
             }
         }
     }
