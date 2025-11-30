@@ -10,3 +10,4 @@
 <p align="center">
   Final project for the DEPI DevOps program, containerizing and orchestrating a Python web app using Docker and Kubernetes.
 </p>
+---
