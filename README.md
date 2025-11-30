@@ -13,5 +13,5 @@
 
 <h3 align="center"> This is the architecture diagram </h3>
 <p align="center">
-<img src="static/draw.gif" width="600">
+<img src="static/draw.gif" width="800">
 </p>
