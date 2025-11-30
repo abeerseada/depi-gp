@@ -11,3 +11,5 @@
   Final project for the DEPI DevOps program, containerizing and orchestrating a Python web app using Docker and Kubernetes.
 </p>
 ---
+This is the architecture diagram:
+![Animated Diagram](static/draw.gif)
