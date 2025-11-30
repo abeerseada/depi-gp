@@ -1,0 +1,33 @@
+---
+- name: Run Jenkins as Docker container on master
+  hosts: jenkins_master
+  become: true
+  vars:
+    jenkins_image: "jenkins/jenkins:lts-jdk11"
+    jenkins_container_name: "jenkins"
+    jenkins_http_port: 8080
+    jenkins_home: /var/jenkins_home
+  tasks:
+
+    - name: Pull Jenkins docker image
+      docker_image:
+        name: "{{ jenkins_image }}"
+        source: pull
+
+    - name: Create docker volume for jenkins data
+      docker_volume:
+        name: jenkins_data
+
+    - name: Ensure Jenkins container is running
+      docker_container:
+        name: "{{ jenkins_container_name }}"
+        image: "{{ jenkins_image }}"
+        state: started
+        restart_policy: unless-stopped
+        published_ports:
+          - "{{ jenkins_http_port }}:8080"
+        volumes:
+          - jenkins_data:{{ jenkins_home }}
+        # NOTE: do NOT disable the setup wizard here
+      register: jenkins_container
+
