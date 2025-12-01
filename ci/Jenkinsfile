@@ -12,7 +12,7 @@ pipeline {
           echo "Commit author: ${authorEmail}"
           echo "Commit message: ${lastMsg}"
 
-          def jenkinsBotEmails = ['jenkins@yourdomain.com', 'jenkins-bot@yourdomain.com', 'actions@github.com']
+          def jenkinsBotEmails = ['jenkins@example.com', 'actions@github.com']
 
           if (jenkinsBotEmails.contains(authorEmail) || lastMsg.contains('[ci skip]') || lastMsg.contains('[skip ci]')) {
             echo "Detected CI-created commit or skip token → skipping pipeline to avoid webhook loop."
