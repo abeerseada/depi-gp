@@ -18,7 +18,7 @@
 
 ---
 
-# **DEPI Graduation Project — Full DevOps CI/CD Pipeline**
+# **DEPI Graduation Project: Full DevOps CI/CD Pipeline**
 
 A complete DevOps pipeline built using **Terraform**, **Ansible**, **Jenkins**, **Docker**, **Kubernetes**, and **ArgoCD**, enabling automated build and deployment from GitHub commits to a running Kubernetes application.
 
@@ -56,7 +56,7 @@ This creates a complete end-to-end GitOps workflow.
 
 ### **Configuration (Ansible)**
 
-- Install Docker, Git, Java, Trivy
+- Install Docker, Git, Java
 - Configure Jenkins Master container
 - Prepare Jenkins Slave as a build agent
 
@@ -76,33 +76,6 @@ Pipeline stages:
 - ArgoCD watches the `k8s/` folder in the repo
 - Auto-deploys whenever image tags change
 - Kubernetes hosts the running application in namespace `depi`
-
----
-
-## **Project Structure**
-
-```
-terraform/
-  main.tf
-  variables.tf
-  outputs.tf
-  backend.tf
-ansible/
-  hosts.ini
-  jenkins_master.yml
-  prepare_slave.yml
-k8s/
-  namespace.yaml
-  deployment.yaml
-  service.yaml
-ci/steps/
-  buildImage.groovy
-  pushImage.groovy
-  scanImage.groovy
-  updateManifests.groovy
-Jenkinsfile
-README.md
-```
 
 ---
 
