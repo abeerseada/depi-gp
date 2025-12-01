@@ -8,8 +8,8 @@ def call() {
 
             sh """
                 echo "Configuring git for commit..."
-                git config user.email "abeerseada148@gmail.com"
-                git config user.name "abeerseada"
+                git config user.email "jenkins@example.com"
+                git config user.name "Jenkins"
 
                 echo "Setting remote URL with token..."
                 git remote set-url origin https://${GIT_USER}:${GIT_TOKEN}@github.com/abeerseada/depi-gp.git
