@@ -63,3 +63,5 @@ terraform/terraform.tfstate.backup
 terraform/.terraform.lock.hcl
 terraform/crash.log
 terraform/*.tfvars
+terraform/plan.tfplan
+terraform/tfplan.destroy
