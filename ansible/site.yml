@@ -60,7 +60,7 @@
         groups: docker
         append: yes
 
-    - name: Install docker-compose (fallback) - pip not used, using plugin installed above ensures docker compose v2; keep for compatibility
+    - name: Install docker-compose 
       apt:
         name: python3-pip
         state: present
@@ -76,7 +76,7 @@
         name: openjdk-11-jdk
         state: present
 
-    - name: Create folders for Jenkins volumes (if you later run Jenkins container)
+    - name: Create folders for Jenkins volumes
       file:
         path: "{{ item }}"
         state: directory
@@ -87,18 +87,6 @@
         - /var/jenkins_home
         - /opt/jenkins
       tags: jenkins_dirs
-
-    - name: Ensure ufw is installed (optional)
-      apt:
-        name: ufw
-        state: present
-
-    - name: Allow SSH through ufw (optional, only enable if you want to manage firewall)
-      ufw:
-        rule: allow
-        name: OpenSSH
-      when: false   # default false, change to true if you want to enable ufw rules
-      tags: firewall
 
   handlers:
     - name: restart docker
