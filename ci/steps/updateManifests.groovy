@@ -1,8 +1,10 @@
 def call() {
-    stage('Update Manifests ') {
-        echo 'Updating Kubernetes manifests (YAML files) using sed...'
+    stage('Update Manifests') {
+        echo 'Updating Kubernetes manifests (deployment.yaml)...'
+
         sh """
-          echo "Updating image tag in manifests..."
+            sed -i 's|image: .*|image: abeerseada/flask-app-1:${BUILD_NUMBER}|' k8s/deployment.yaml
+            echo "Manifest updated to image: abeerseada/flask-app-1:${BUILD_NUMBER}"
         """
     }
 }
