@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: depi-container
-          image: abeerseada/flask-app-1:12
+          image: abeerseada/flask-app-1:13
           imagePullPolicy: Always
           ports:
             - containerPort: 5051
