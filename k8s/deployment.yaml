@@ -1,3 +1,4 @@
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,21 +15,32 @@ spec:
         app: depi-app
     spec:
       containers:
-        - name: depi-container
-          image: abeerseada/flask-app-1:87
-          imagePullPolicy: Always
+        - name: depi-app
+          image: abeerseada/flask-app-1:test
           ports:
             - containerPort: 5051
-          resources:
-            requests:
-              memory: "128Mi"
-              cpu: "100m"
-            limits:
-              memory: "256Mi"
-              cpu: "250m"
           env:
             - name: FLASK_ENV
               value: development
             - name: FLASK_APP
               value: app.py
-          command: ["python", "app.py"]
+
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_NAME
+            - name: MONGO_ROOT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_ROOT_USER
+            - name: MONGO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_ROOT_PASSWORD
+
+            - name: MONGO_URI
+              value: "mongodb://$(MONGO_ROOT_USER):$(MONGO_ROOT_PASSWORD)@mongo:27017/?authSource=admin"
+          
