@@ -16,9 +16,10 @@ spec:
     spec:
       containers:
         - name: depi-app
-          image: abeerseada/flask-app-1:test
+          image: abeerseada/flask-app-1:v11
           ports:
             - containerPort: 5051
+          imagePullPolicy: Always
           env:
             - name: FLASK_ENV
               value: development
