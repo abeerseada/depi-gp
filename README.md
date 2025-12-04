@@ -100,8 +100,8 @@ Terraform automatically stores state in the S3 bucket configured in `backend.tf`
 
 ```bash
 cd ansible
+ansible-playbook -i hosts.ini site.yml
 ansible-playbook -i hosts.ini jenkins_master.yml
-ansible-playbook -i hosts.ini prepare_slave.yml
 ```
 
 This sets up:
@@ -131,6 +131,16 @@ Webhook from GitHub triggers the pipeline automatically.
 ---
 
 ## **Kubernetes + ArgoCD Deployment**
+
+# **4️ Create EKS Cluster**
+
+```bash
+eksctl create cluster -f cluster.yaml
+aws eks update-kubeconfig --region us-east-1 --name depi-eks
+kubectl get nodes
+```
+
+Creates EKS with private nodes.
 
 ### **Application Definition**
 
@@ -162,11 +172,12 @@ argocd app get myapp
 ## **End-to-End Workflow**
 
 1. Developer pushes code → GitHub
-2. GitHub webhook triggers Jenkins
-3. Jenkins builds + scans + pushes Docker image
-4. Jenkins updates Kubernetes manifests with the new image tag
-5. ArgoCD detects the commit and auto-syncs
-6. Kubernetes updates the running application automatically
+2. GitHub Webhook triggers Jenkins
+3. Jenkins builds, scans, pushes Docker image
+4. Jenkins updates Kubernetes manifests
+5. GitHub commits → ArgoCD auto-syncs
+6. EKS updates the running application
+7. Application becomes live on AWS LoadBalancer
 
 ---
 
@@ -193,6 +204,12 @@ kubectl describe deployment -n depi
 terraform destroy
 ```
 
+### **EKS delete cluster**
+
+```bash
+eksctl delete cluster --name depi-eks --region us-east-1
+```
+
 ### **Jenkins**
 
 ```bash
@@ -217,5 +234,3 @@ This project demonstrates a real-world DevOps workflow:
 - Continuous Integration
 - Continuous Delivery
 - GitOps deployment through ArgoCD
-
-Fully automated from code commit → to running application.
