@@ -9,7 +9,7 @@ COPY ./requirements.txt .
 
 # --- create venv and install in it ---
 RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir --target=/install -r requirements.txt
 
 COPY . /app
 
@@ -22,7 +22,7 @@ RUN addgroup --gid 1001 --system nonroot && \
     adduser --no-create-home --shell /bin/false \
     --disabled-password --uid 1001 --system --group nonroot
 
-
+COPY --from=builder --chown=nonroot:nonroot /install /usr/local/lib/python3.11/site-packages
 COPY --from=builder --chown=nonroot:nonroot /app /app
 
 USER nonroot:nonroot
