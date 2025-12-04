@@ -1,10 +1,21 @@
 def call() {
-    stage('Delete Image Locally ') {
-        echo ' Deleting local Docker image...'
-        sh """ docker rmi abeerseada/flask-app-1:$BUILD_NUMBER|| true"""
-		echo ' Local Docker image deleted successfully.'
-		currentBuild.displayName = "#${BUILD_NUMBER} - myimg"
-		currentBuild.description = "Deleted local Docker image for myimg"
+    stage('Scan Image (Trivy)') {
+    echo "Scanning local image with Trivy (HIGH/CRITICAL -> mark UNSTABLE)"
+    script {
+        try {
+        sh '''
+            set -e
+            IMAGE_LOCAL=abeerseada/flask-app-1:${BUILD_NUMBER}
+            docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v $HOME/.cache/trivy:/root/.cache \
+            aquasec/trivy:latest image --exit-code 1 --severity HIGH,CRITICAL ${IMAGE_LOCAL}
+        '''
+        } catch (Exception e) {
+        echo "Trivy found HIGH/CRITICAL issues or failed: ${e.message}"
+        currentBuild.result = 'UNSTABLE'
+        }
     }
+    }
+    return this
 }
-return this

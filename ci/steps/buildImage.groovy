@@ -1,10 +1,16 @@
 def call() {
-    stage('Build Image ') {
-        echo ' Building Docker image...'
-        sh """docker buildx build --platform linux/amd64,linux/arm64  -t abeerseada/flask-app-1:$BUILD_NUMBER ./app/."""
-		echo ' Docker image built successfully.'
-		currentBuild.displayName = "#${BUILD_NUMBER} - myimg"
-		currentBuild.description = "Built Docker image for myimg"
+    stage('Build Image (local, for scan)') {
+    echo "Building local image for scan: ${env.BUILD_NUMBER}"
+    sh '''
+        set -e
+        IMAGE_LOCAL=abeerseada/flask-app-1:${BUILD_NUMBER}
+        echo "Ensure buildx builder exists"
+        docker buildx create --use 2>/dev/null || true
+
+        # Build amd64 image and load to local docker (use for trivy scan)
+        docker buildx build --platform linux/amd64 --load -t ${IMAGE_LOCAL} ./app/
+        echo "Built local image: ${IMAGE_LOCAL}"
+    '''
     }
+    return this
 }
-return this
