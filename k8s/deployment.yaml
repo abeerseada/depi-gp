@@ -1,47 +1,42 @@
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: depi-app
-  namespace: depi
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: depi-app
-  template:
-    metadata:
-      labels:
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: depi-app
+    namespace: depi
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
         app: depi-app
-    spec:
-      containers:
-        - name: depi-app
-          image: abeerseada/flask-app-1:2
-          ports:
-            - containerPort: 5051
-          imagePullPolicy: Always
-          env:
-            - name: FLASK_ENV
-              value: development
-            - name: FLASK_APP
-              value: app.py
+    template:
+      metadata:
+        labels:
+          app: depi-app
+      spec:
+        containers:
+          - name: depi-app
+            image: abeerseada/flask-app-1:v1
+            ports:
+              - containerPort: 5051
+            imagePullPolicy: Always
+            env:
+              - name: DB_NAME
+                valueFrom:
+                  configMapKeyRef:
+                    name: app-config
+                    key: DB_NAME
+              - name: MONGO_ROOT_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: mongo-secret
+                    key: MONGO_ROOT_USER
+              - name: MONGO_ROOT_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: mongo-secret
+                    key: MONGO_ROOT_PASSWORD
 
-            - name: DB_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: DB_NAME
-            - name: MONGO_ROOT_USER
-              valueFrom:
-                secretKeyRef:
-                  name: mongo-secret
-                  key: MONGO_ROOT_USER
-            - name: MONGO_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mongo-secret
-                  key: MONGO_ROOT_PASSWORD
-
-            - name: MONGO_URI
-              value: "mongodb://$(MONGO_ROOT_USER):$(MONGO_ROOT_PASSWORD)@mongo:27017/?authSource=admin"
-          
+              - name: MONGO_URI
+                value: "mongodb://$(MONGO_ROOT_USER):$(MONGO_ROOT_PASSWORD)@mongo:27017/?authSource=admin"
+            

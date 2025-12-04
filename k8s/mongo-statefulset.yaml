@@ -53,6 +53,7 @@ spec:
   - metadata:
       name: mongo-data
     spec:
+      storageClassName: gp2-csi
       accessModes: ["ReadWriteOnce"]
       resources:
         requests:
