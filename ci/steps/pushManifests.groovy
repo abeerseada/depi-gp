@@ -12,6 +12,7 @@ def call() {
         git add k8s/deployment.yaml || true
         git commit -m "ci: update image to ${BUILD_NUMBER}" || true
         git push origin HEAD:main || true
+        '''
     }
 }
 return this
