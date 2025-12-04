@@ -1,11 +1,6 @@
 pipeline {
   agent { label 'slave-node' }
-  environment {
-    AWS_REGION = "us-east-1"
-    ECR_REGISTRY = "467025087469.dkr.ecr.us-east-1.amazonaws.com"
-    ECR_REPO = "flask-app-1"
-    EKS_CLUSTER_NAME = "depi-eks"   
-  }
+
   stages {
     stage('Check Jenkins commits') {
       steps {
