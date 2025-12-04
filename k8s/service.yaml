@@ -4,10 +4,10 @@ metadata:
   name: depi-service
   namespace: depi
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: depi-app
   ports:
     - port: 5051
       targetPort: 5051
-      nodePort: 30008
+

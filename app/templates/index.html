@@ -3,23 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <title>DEPI Graduation Project</title>
+
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
     <div class="container">
         <div class="content">
+
             <h1 class="title">DevOps Graduation Project</h1>
+
             <div class="logos">
-                <img src="{{ url_for('static', filename='logos/depi.png') }}" alt="depi Logo" class="depi">
+                <img src="{{ url_for('static', filename='logos/depi.png') }}" alt="DEPI Logo" class="depi">
             </div>
+
             <p class="description">
-                This project represents the culmination of the DevOps training track at DEPI
+                This project represents the culmination of the DevOps training track at DEPI.
+            </p>
+
+            <!-- Add Item Form -->
+            <div class="form-section">
+                <h2>Add Project Item</h2>
+                <form action="/add" method="POST">
+                    <input type="text" name="name" placeholder="Enter item name" required>
+                    <button type="submit">Add</button>
+                </form>
+            </div>
+
+            <!-- Display Items -->
+            <div class="items-section">
+                <h2>Saved Items</h2>
+                {% if items %}
+                    <ul class="items-list">
+                        {% for item in items %}
+                            <li class="item-card">
+                                <span>{{ item.name }}</span>
+
+                                <form action="/item/{{ item._id }}/delete" method="POST">
+                                    <button class="delete-btn">Delete</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No items added yet.</p>
+                {% endif %}
+            </div>
+
         </div>
+
         <footer>
             © 2025 DEPI DevOps Track
         </footer>
     </div>
 </body>
 </html>
-

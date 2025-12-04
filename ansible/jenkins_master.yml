@@ -5,7 +5,6 @@
   vars:
     jenkins_image: "jenkins/jenkins:lts-jdk11"
     jenkins_container_name: "jenkins"
-    jenkins_http_port: 8080
     jenkins_home: /var/jenkins_home
   tasks:
 
@@ -18,16 +17,23 @@
       docker_volume:
         name: jenkins_data
 
-    - name: Ensure Jenkins container is running
+    - name: Run Jenkins container with full docker access
       docker_container:
         name: "{{ jenkins_container_name }}"
         image: "{{ jenkins_image }}"
         state: started
-        restart_policy: unless-stopped
+        restart_policy: always
+
         published_ports:
-          - "{{ jenkins_http_port }}:8080"
+          - "8080:8080"
+          - "50000:50000"
+
         volumes:
-          - jenkins_data:{{ jenkins_home }}
-        # NOTE: do NOT disable the setup wizard here
-      register: jenkins_container
+          - "jenkins_data:{{ jenkins_home }}"
+          - "/var/run/docker.sock:/var/run/docker.sock"
+          - "/usr/bin/docker:/usr/bin/docker"
+
+        groups:
+          - 999
+
 

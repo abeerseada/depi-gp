@@ -1,0 +1,60 @@
+Dockerfile
+docker-compose.yml
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Byte-compiled / optimized / DLL files
+*.so
+
+# OS generated files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Compiled files
+*.egg-info/
+build/
+dist/
+
+# Docker files not needed in build context
+docker-compose.yml
+docker-compose.override.yml
+
+# Git
+.git/
+.gitignore
+
+# Environment variables (DO NOT COPY TO IMAGE)
+.env
+.env.*
+
+# Logs
+*.log
+
+# Local database or data files
+data/
+*.db
+
+# Temporary files
+tmp/
+*.tmp
+
+# Node (لو عندك frontend)
+node_modules/
+npm-debug.log
+
+# Coverage / testing
+.coverage
+htmlcov/
