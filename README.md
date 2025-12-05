@@ -22,6 +22,8 @@
 
 A complete DevOps pipeline built using **Terraform**, **Ansible**, **Jenkins**, **Docker**, **Kubernetes**, and **ArgoCD**, enabling automated build and deployment from GitHub commits to a running Kubernetes application.
 
+This project also includes **full EKS monitoring using CloudWatch**, **email alerting through SNS**, and **automatic worker node scaling using Kubernetes Cluster Autoscaler**, making it production-ready and self-healing.
+
 ---
 
 ## **Project Overview**
@@ -34,6 +36,8 @@ This project implements a fully automated CI/CD workflow:
 - **ArgoCD** deploys updated Kubernetes manifests automatically.
 - **DockerHub** hosts application images.
 - **GitHub Webhooks** trigger Jenkins on every code push.
+- **CloudWatch Monitoring + Alerts** give full visibility of cluster health.
+- **Cluster Autoscaler** ensures the EKS cluster scales up/down automatically based on workload.
 
 This creates a complete end-to-end GitOps workflow.
 
@@ -142,15 +146,74 @@ kubectl get nodes
 
 Creates EKS with private nodes.
 
+# **EKS Monitoring (Amazon CloudWatch + FluentBit + SNS Email Alerts)**
+
+The EKS cluster is fully integrated with **Amazon CloudWatch Container Insights**, providing:
+
+- Node CPU & Memory monitoring
+- Pod-level performance metrics
+- Application logs using **FluentBit**
+- Infrastructure health dashboards
+- Autoscaling event logs
+- Error and crash detection
+
+### **Email Alerts using SNS → Gmail**
+
+SNS notification system triggers email alerts on:
+
+- High CPU or memory on worker nodes
+- Node failures or unresponsiveness
+- Pods stuck in Pending / CrashLoopBackOff
+- Autoscaler failures to scale up/down
+- Any CloudWatch alarm thresholds
+
+This ensures early detection and fast remediation.
+
+<p align="center">
+<img src="static/cw.png" width="800">
+</p>
+
+---
+
+# **Cluster Autoscaler on EKS**
+
+The **Cluster Autoscaler** is deployed to automatically scale the worker nodes inside the EKS cluster.
+
+### Features:
+
+- Scales **up** when pods cannot be scheduled
+- Scales **down** when nodes become underutilized
+- Integrates with **AWS Auto Scaling Groups**
+- Fully supports **multi-AZ nodegroups**
+- IAM roles configured via OIDC for autoscaler permissions
+
+### Autoscaler Benefits:
+
+- Guarantees application availability
+- Reduces AWS cost by removing idle nodes
+- Enhances reliability during high traffic loads
+- Works seamlessly with ArgoCD deployments
+
+Autoscaler logs are available under:
+
+```bash
+kubectl logs -n kube-system -l app=cluster-autoscaler
+```
+
 ### **Application Definition**
 
 Located at:
 
 ```
 k8s/
- ├─ namespace.yaml
+ ├─ configmap-app.yaml
  ├─ deployment.yaml
+ ├─ gp2-csi-sc.yaml
+ ├─ mongo-statefulset.yaml
+ ├─ namespace.yaml
+ ├─ secret-mongo.yaml
  └─ service.yaml
+
 ```
 
 ### **ArgoCD Application**
@@ -159,6 +222,10 @@ k8s/
 <img src="static/argocd.png" width="800">
 <img src="static/app.png" width="800">
 </p>
+
+```bash
+k apply -f /argocd-app.yaml
+```
 
 ### **ArgoCD Sync**
 
@@ -176,8 +243,10 @@ argocd app get myapp
 3. Jenkins builds, scans, pushes Docker image
 4. Jenkins updates Kubernetes manifests
 5. GitHub commits → ArgoCD auto-syncs
-6. EKS updates the running application
-7. Application becomes live on AWS LoadBalancer
+6. EKS deploys updated application
+7. CloudWatch monitors cluster health
+8. Autoscaler adjusts worker nodes automatically
+9. Application becomes live and self-healing on AWS
 
 ---
 
@@ -225,12 +294,16 @@ docker run -d --name jenkins \
 
 ---
 
-## **Conclusion**
+# **Conclusion**
 
 This project demonstrates a real-world DevOps workflow:
 
 - Infrastructure as Code
-- Automated configuration
+- Automated configuration management
 - Continuous Integration
 - Continuous Delivery
-- GitOps deployment through ArgoCD
+- GitOps deployment with ArgoCD
+- Full observability with CloudWatch + SNS alerts
+- Automatic scaling with Cluster Autoscaler
+
+The system is now **scalable, observable, fault-tolerant, and production-ready.**
