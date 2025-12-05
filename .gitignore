@@ -65,3 +65,5 @@ terraform/crash.log
 terraform/*.tfvars
 terraform/plan.tfplan
 terraform/tfplan.destroy
+a.sh
+ebs-csi-trust-policy.json
