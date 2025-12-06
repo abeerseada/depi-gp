@@ -1,0 +1,22 @@
+groups:
+  - name: system-alerts
+    interval: 30s   
+
+    rules:
+      - alert: InstanceDown
+        expr: up == 0  # the threshold 
+        for: 1m  # duration
+        labels:
+          severity: critical  
+
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
