@@ -76,7 +76,7 @@
 
     - name: Copy a directory from host to target
       ansible.builtin.copy:
-        src: ../monitoring/
+        src: ../monitoring/   # the path of monitoring dir.
         dest: /home/ubuntu/monitoring/
         mode: '0755'
 
@@ -84,7 +84,7 @@
       community.docker.docker_compose_v2:
         project_src: /home/ubuntu/monitoring
         state: present
-        restarted: true 
+
 ---
 
 - name: install node_exporter on master and slave 
