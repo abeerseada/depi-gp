@@ -106,6 +106,7 @@ Terraform automatically stores state in the S3 bucket configured in `backend.tf`
 cd ansible
 ansible-playbook -i hosts.ini site.yml
 ansible-playbook -i hosts.ini jenkins_master.yml
+ansible-playbook -i hosts.ini monitor.yml
 ```
 
 This sets up:
@@ -114,6 +115,7 @@ This sets up:
 - Jenkins Master container
 - Jenkins Slave tooling
 - Required permissions (docker group, SSH, etc.)
+- Grafana and Prometheus and node exporter on targets 
 
 ---
 
@@ -307,3 +309,5 @@ This project demonstrates a real-world DevOps workflow:
 - Automatic scaling with Cluster Autoscaler
 
 The system is now **scalable, observable, fault-tolerant, and production-ready.**
+
+
