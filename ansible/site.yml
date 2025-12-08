@@ -46,6 +46,7 @@
       apt:
         name: "{{ docker_packages }}"
         state: present
+      notify: restart docker
 
     - name: Ensure docker service is enabled and started
       systemd:
