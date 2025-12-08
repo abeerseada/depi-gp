@@ -2,6 +2,7 @@ pipeline {
   agent { label 'slave-node' }
 
   stages {
+
     stage('Check Jenkins commits') {
       steps {
         script {
@@ -29,8 +30,6 @@ pipeline {
         script {
           buildImage = load 'ci/steps/buildImage.groovy'
           scanImage = load 'ci/steps/scanImage.groovy'
-          pushImage = load 'ci/steps/pushImage.groovy'
-          deleteImageLocally = load 'ci/steps/deleteImageLocally.groovy'
           updateManifests = load 'ci/steps/updateManifests.groovy'
           pushManifests = load 'ci/steps/pushManifests.groovy'
         }
@@ -43,8 +42,6 @@ pipeline {
         script {
           buildImage()
           scanImage()
-          pushImage()
-          deleteImageLocally()
           updateManifests()
           pushManifests()
         }
