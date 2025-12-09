@@ -2,17 +2,25 @@ def call() {
     stage('Build Image') {
         echo 'Building Docker image...'
 
-        sh """
-            docker buildx build \
-            --platform linux/amd64 \
-            -t abeerseada/flask-app-1:${BUILD_NUMBER} \
-            --push ./app/.
-        """
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'dockerhub-creds',
+                usernameVariable: 'DOCKER_USER',
+                passwordVariable: 'DOCKER_PASS'
+            )
+        ]) {
+            sh """
+                echo "\$DOCKER_PASS" | docker login -u "\$DOCKER_USER" --password-stdin
+
+                docker buildx build \
+                --platform linux/amd64 \
+                -t abeerseada/flask-app-1:${env.BUILD_NUMBER} \
+                --push ./app/.
+
+                docker logout
+            """
+        }
 
         echo 'Docker image built successfully.'
-        currentBuild.displayName = "#${BUILD_NUMBER} - myimg"
-        currentBuild.description = "Built Docker image for myimg"
-    }
-}
-
-return this
+        currentBuild.displayName = "#${env.BUILD_NUMBER} - myimg"
+        currentBuild.description = "
