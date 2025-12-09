@@ -134,15 +134,16 @@ Each stage is written as a Groovy shared library step under `ci/steps/`.
 - Security scan with Trivy
 - Update Kubernetes YAML files
 - Commit & push back to GitHub
+Webhook from GitHub triggers the pipeline automatically.
 
-<h3 align="center"> This is the architecture diagram </h3>
+
 <p align="center">
 <img src="static/jn.png" width="800">
 </p>
-Webhook from GitHub triggers the pipeline automatically.
 
 <p align="center">
 <img src="static/prom-jn.png" width="800">
+</p>
 
 <h3 align="center"> This is the targets </h3>
 <p align="center">
