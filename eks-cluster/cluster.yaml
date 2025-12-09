@@ -17,9 +17,9 @@ vpc:
 nodeGroups:
   - name: ng-workers-large
     instanceType: t3.large
-    desiredCapacity: 4
+    desiredCapacity: 3
     minSize: 3
-    maxSize: 6
+    maxSize: 4
     privateNetworking: true
     ssh:
       allow: false
