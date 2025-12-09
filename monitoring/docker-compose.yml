@@ -1,3 +1,4 @@
+version: "3.9"
 
 services:
   prometheus:
@@ -11,24 +12,18 @@ services:
       - "9090:9090"
     restart: always
 
-  node_exporter:
-    image: prom/node-exporter:latest
-    container_name: node_exporter
-    ports:
-      - "9100:9100"
-    restart: always
-
   alertmanager:
     image: prom/alertmanager:latest
     container_name: alertmanager
     volumes:
       - /home/ubuntu/monitoring/config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    environment:
+      - SLACK_WEBHOOK_URL=https://hooks.slack.com/services/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
     ports:
       - "9093:9093"
     restart: always
-  
 
-  Grafana:
+  grafana:
     image: grafana/grafana:latest
     container_name: grafana
     volumes:
@@ -36,7 +31,6 @@ services:
     ports:
       - "3000:3000"
     restart: always
-
 
 volumes:
   grafana-storage:
