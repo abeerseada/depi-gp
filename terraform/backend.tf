@@ -6,6 +6,5 @@ terraform {
     key     = "jenkins/terraform.tfstate"
     region  = "eu-central-1"
     encrypt = true
-    # dynamodb_table = "abeer-terraform-locks"  # optional locking table
   }
 }

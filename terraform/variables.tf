@@ -40,17 +40,16 @@ variable "instance_type_slave" {
 }
 
 variable "key_name" {
-  description = "Existing EC2 key pair name (must exist in the region). Private key (.pem) must be on your machine to SSH."
+  description = "Existing EC2 key pair name"
   type        = string
 }
 
 variable "allowed_ssh_cidr" {
-  description = "CIDR allowed to SSH to Jenkins master (restrict for security)."
-  default     = "0.0.0.0/0"
+  description = "CIDR allowed to SSH to Jenkins master"
+  default     = "156.197.103.221/32"
 }
 
 variable "project_name" {
   description = "Tag prefix"
   default     = "abeer-jenkins"
 }
-    

@@ -12,14 +12,35 @@ resource "aws_security_group" "master_sg" {
     cidr_blocks = [var.allowed_ssh_cidr]
   }
 
-  # Optional HTTP for Jenkins UI (port 8080). Uncomment if you want web open.
   ingress {
-    description = "Jenkins UI (optional)"
+    description = "Jenkins UI "
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+    ingress {
+    description = "Prometheus UI"
+    from_port   = 9090
+    to_port     = 9090
+    protocol    = "tcp"
+    cidr_blocks = [var.allowed_ssh_cidr]
+  }
+    ingress {
+    description = "Alerts"
+    from_port   = 9093
+    to_port     = 9093
+    protocol    = "tcp"
+    cidr_blocks = [var.allowed_ssh_cidr]
+  }
+  ingress {
+    description = "Grafana UI"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = [var.allowed_ssh_cidr]
+  }
+
 
   egress {
     from_port   = 0
@@ -44,6 +65,14 @@ resource "aws_security_group" "slave_sg" {
     protocol        = "tcp"
     security_groups = [aws_security_group.master_sg.id]
   }
+    ingress {
+    description     = "Node exporter from master"
+    from_port       = 9100
+    to_port         = 9100
+    protocol        = "tcp"
+    security_groups = [aws_security_group.master_sg.id]
+  }
+
 
   egress {
     from_port   = 0

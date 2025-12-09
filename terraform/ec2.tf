@@ -1,4 +1,4 @@
-# ec2.tf (أساس)
+
 resource "aws_instance" "jenkins_master" {
   ami                         = data.aws_ami.ubuntu_2204.id
   instance_type               = var.instance_type_master
