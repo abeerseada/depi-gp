@@ -10,17 +10,21 @@ def call() {
             )
         ]) {
             sh """
-                echo "\$DOCKER_PASS" | docker login -u "\$DOCKER_USER" --password-stdin
+              echo "\$DOCKER_PASS" | docker login -u "\$DOCKER_USER" --password-stdin
 
-                docker buildx build \
+              docker buildx build \
                 --platform linux/amd64 \
-                -t abeerseada/flask-app-1:${env.BUILD_NUMBER} \
+                -t abeerseada/flask-app-1:${BUILD_NUMBER} \
                 --push ./app/.
 
-                docker logout
+              docker logout
             """
         }
 
         echo 'Docker image built successfully.'
-        currentBuild.displayName = "#${env.BUILD_NUMBER} - myimg"
-        currentBuild.description = "
+        currentBuild.displayName = "#${BUILD_NUMBER} - myimg"
+        currentBuild.description = "Built Docker image for myimg"
+    }
+}
+
+return this
