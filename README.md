@@ -170,7 +170,7 @@ Webhook from GitHub triggers the pipeline automatically.
 
 ## **Kubernetes + ArgoCD Deployment**
 
-# **4️ Create EKS Cluster**
+# **Create EKS Cluster**
 
 ```bash
 eksctl create cluster -f cluster.yaml
