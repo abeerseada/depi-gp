@@ -24,6 +24,8 @@ A complete DevOps pipeline built using **Terraform**, **Ansible**, **Jenkins**, 
 
 This project also includes **full EKS monitoring using CloudWatch**, **email alerting through SNS**, and **automatic worker node scaling using Kubernetes Cluster Autoscaler**, making it production-ready and self-healing.
 
+Also includes **full Jenkins monitoring using Prometheus**, **alerting through Slack**
+
 ---
 
 ## **Project Overview**
@@ -36,6 +38,7 @@ This project implements a fully automated CI/CD workflow:
 - **ArgoCD** deploys updated Kubernetes manifests automatically.
 - **DockerHub** hosts application images.
 - **GitHub Webhooks** trigger Jenkins on every code push.
+- **Prometheus Monitoring + Alerts** give full visibility of Jenkins nodes health.
 - **CloudWatch Monitoring + Alerts** give full visibility of cluster health.
 - **Cluster Autoscaler** ensures the EKS cluster scales up/down automatically based on workload.
 
@@ -106,7 +109,8 @@ Terraform automatically stores state in the S3 bucket configured in `backend.tf`
 cd ansible
 ansible-playbook -i hosts.ini site.yml
 ansible-playbook -i hosts.ini jenkins_master.yml
-ansible-playbook -i hosts.ini monitor.yml
+ansible-playbook -i hosts.ini node-exporter.yml
+ansible-playbook -i hosts.ini apply_monitoring.yml
 ```
 
 This sets up:
@@ -115,7 +119,7 @@ This sets up:
 - Jenkins Master container
 - Jenkins Slave tooling
 - Required permissions (docker group, SSH, etc.)
-- Grafana and Prometheus and node exporter on targets 
+- Grafana and Prometheus and node exporter on targets
 
 ---
 
@@ -126,13 +130,41 @@ Each stage is written as a Groovy shared library step under `ci/steps/`.
 ### **Main Pipeline (`Jenkinsfile`) includes:**
 
 - Build Docker image
-- Delete local image (optional)
 - Push image to DockerHub
 - Security scan with Trivy
 - Update Kubernetes YAML files
 - Commit & push back to GitHub
 
+<h3 align="center"> This is the architecture diagram </h3>
+<p align="center">
+<img src="static/jn.png" width="800">
+</p>
 Webhook from GitHub triggers the pipeline automatically.
+
+<h3 align="center"> This is the architecture diagram </h3>
+<p align="center">
+<img src="static/prom-jn.png" width="800">
+</p>
+
+<h3 align="center"> This is the architecture diagram </h3>
+<p align="center">
+<img src="static/targets.png" width="800">
+</p>
+
+<h3 align="center"> This is the architecture diagram </h3>
+<p align="center">
+<img src="static/grafana.png" width="800">
+</p>
+
+<h3 align="center"> This is the architecture diagram </h3>
+<p align="center">
+<img src="static/alert.png" width="800">
+</p>
+
+<h3 align="center"> This is the architecture diagram </h3>
+<p align="center">
+<img src="static/slack.png" width="800">
+</p>
 
 ---
 
@@ -281,19 +313,6 @@ terraform destroy
 eksctl delete cluster --name depi-eks --region us-east-1
 ```
 
-### **Jenkins**
-
-```bash
-docker run -d --name jenkins \
-  --restart=always \
-  -p 8080:8080 -p 50000:50000 \
-  -v jenkins_data:/var/jenkins_home \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /usr/bin/docker:/usr/bin/docker \
-  --group-add 999 \
-  jenkins/jenkins:lts-jdk11
-```
-
 ---
 
 # **Conclusion**
@@ -305,9 +324,7 @@ This project demonstrates a real-world DevOps workflow:
 - Continuous Integration
 - Continuous Delivery
 - GitOps deployment with ArgoCD
-- Full observability with CloudWatch + SNS alerts
+- Full observability with CloudWatch + SNS alerts + Prometheus + Grafana
 - Automatic scaling with Cluster Autoscaler
 
 The system is now **scalable, observable, fault-tolerant, and production-ready.**
-
-
