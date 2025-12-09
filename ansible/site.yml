@@ -72,9 +72,9 @@
         name: git
         state: present
 
-    - name: Install OpenJDK 11 (needed for Jenkins)
+    - name: Install OpenJDK 17 (needed for Jenkins)
       apt:
-        name: openjdk-11-jdk
+        name: openjdk-17-jdk
         state: present
 
     - name: Create folders for Jenkins volumes
