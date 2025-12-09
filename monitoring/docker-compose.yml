@@ -18,7 +18,7 @@ services:
     volumes:
       - /home/ubuntu/monitoring/config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
     environment:
-      - SLACK_WEBHOOK_URL=https://hooks.slack.com/services/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
+      - SLACK_WEBHOOK_URL=
     ports:
       - "9093:9093"
     restart: always
