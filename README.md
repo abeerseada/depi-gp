@@ -141,27 +141,25 @@ Each stage is written as a Groovy shared library step under `ci/steps/`.
 </p>
 Webhook from GitHub triggers the pipeline automatically.
 
-<h3 align="center"> This is the architecture diagram </h3>
 <p align="center">
 <img src="static/prom-jn.png" width="800">
-</p>
 
-<h3 align="center"> This is the architecture diagram </h3>
+<h3 align="center"> This is the targets </h3>
 <p align="center">
 <img src="static/targets.png" width="800">
 </p>
 
-<h3 align="center"> This is the architecture diagram </h3>
+<h3 align="center"> This is the Grafana </h3>
 <p align="center">
 <img src="static/grafana.png" width="800">
 </p>
 
-<h3 align="center"> This is the architecture diagram </h3>
+<h3 align="center"> This is the Alert </h3>
 <p align="center">
 <img src="static/alert.png" width="800">
 </p>
 
-<h3 align="center"> This is the architecture diagram </h3>
+<h3 align="center"> This is Slack </h3>
 <p align="center">
 <img src="static/slack.png" width="800">
 </p>
@@ -170,7 +168,7 @@ Webhook from GitHub triggers the pipeline automatically.
 
 ## **Kubernetes + ArgoCD Deployment**
 
-# **Create EKS Cluster**
+# **4️ Create EKS Cluster**
 
 ```bash
 eksctl create cluster -f cluster.yaml
