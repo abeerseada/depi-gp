@@ -327,3 +327,4 @@ This project demonstrates a real-world DevOps workflow:
 - Automatic scaling with Cluster Autoscaler
 
 The system is now **scalable, observable, fault-tolerant, and production-ready.**
+---
