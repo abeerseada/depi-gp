@@ -7,7 +7,6 @@ RUN apt-get update && apt-get install -y build-essential && \
 
 COPY ./requirements.txt .
 
-# --- create venv and install in it ---
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir --target=/install -r requirements.txt
 
